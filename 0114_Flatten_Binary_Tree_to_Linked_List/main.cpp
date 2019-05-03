@@ -58,6 +58,27 @@ class Solution {
     }
 };
 
+/*
+ * DFS
+ *class Solution {
+ *  public:
+ *    void flatten(TreeNode *root) {
+ *        if (root == nullptr)
+ *            return;
+ *        if (root->left)
+ *            flatten(root->left);
+ *        if (root->right)
+ *            flatten(root->right);
+ *        TreeNode *p = root->right;
+ *        root->right = root->left;
+ *        root->left = nullptr;
+ *        while (root->right)
+ *            root = root->right;
+ *        root->right = p;
+ *    }
+ *};
+ */
+
 bool compare(TreeNode *root, vector<int> &ans) {
     for (int val : ans) {
         if (root == nullptr)
