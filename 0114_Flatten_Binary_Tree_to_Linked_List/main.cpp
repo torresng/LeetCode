@@ -26,7 +26,6 @@ The flattened tree should look like:
 
 ***************************************************************/
 
-#include <iostream>
 #include <vector>
 
 using namespace std;
