@@ -1,4 +1,5 @@
 /**************************************************************
+
 Given a binary tree, flatten it to a linked list in-place.
 
 For example, given the following tree:
