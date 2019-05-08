@@ -47,7 +47,6 @@ class Solution {
             return res;
         stack<TreeNode *> s1, s2;
         s1.push(root);
-        bool z = false;
         while (!s1.empty() || !s2.empty()) {
             vector<int> temp;
             while (!s1.empty()) {
