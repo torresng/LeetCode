@@ -24,6 +24,7 @@ return its zigzag level order traversal as:
 ***************************************************************/
 
 #include <iostream>
+#include <stack>
 #include <vector>
 
 using namespace std;
@@ -44,34 +45,55 @@ class Solution {
         vector<vector<int>> res;
         if (root == nullptr)
             return res;
-        vector<TreeNode *> curr, temp;
-        curr.push_back(root);
+        stack<TreeNode *> s1, s2;
+        s1.push(root);
         bool z = false;
-        while (!curr.empty()) {
-            vector<int> vec;
-            for (auto t : curr) {
-                vec.push_back(t->val);
-                if (t->left) {
-                    temp.push_back(t->left);
-                }
-                if (t->right) {
-                    temp.push_back(t->right);
-                }
+        while (!s1.empty() || !s2.empty()) {
+            vector<int> temp;
+            while (!s1.empty()) {
+                TreeNode *p = s1.top();
+                s1.pop();
+                temp.push_back(p->val);
+                if (p->left)
+                    s2.push(p->left);
+                if (p->right)
+                    s2.push(p->right);
             }
-            if(z) {
-                reverse(vec.begin(), vec.end());
-                z = false;
-            } else {
-                z = true;
+            if (!temp.empty())
+                res.push_back(temp);
+            temp.clear();
+            while (!s2.empty()) {
+                TreeNode *p = s2.top();
+                s2.pop();
+                temp.push_back(p->val);
+                if (p->right)
+                    s1.push(p->right);
+                if (p->left)
+                    s1.push(p->left);
             }
-            res.push_back(vec);
-            curr.clear();
-            swap(curr, temp);
+            if (!temp.empty())
+                res.push_back(temp);
+            temp.clear();
         }
-
         return res;
     }
 };
+
+bool compare(vector<vector<int>> &a, vector<vector<int>> &b) {
+    if (a.size() != b.size())
+        return false;
+    for (unsigned long i = 0; i < a.size(); ++i) {
+        vector<int> &v1 = a[i];
+        vector<int> &v2 = b[i];
+        if (v1.size() != v2.size())
+            return false;
+        for (unsigned long j = 0; j < v1.size(); ++j) {
+            if (v1[j] != v2[j])
+                return false;
+        }
+    }
+    return true;
+}
 
 void test_case_1() {
     TreeNode *root = new TreeNode(3);
@@ -85,14 +107,9 @@ void test_case_1() {
     node2->right = node4;
 
     vector<vector<int>> ans = {{3}, {20, 9}, {15, 7}};
-
     vector<vector<int>> res = Solution().zigzagLevelOrder(root);
-    for (auto v : res) {
-        for (auto val : v) {
-            cout << val << ",";
-        }
-        cout << endl;
-    }
+
+    assert(compare(ans, res));
 }
 
 int main(void) {
