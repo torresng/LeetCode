@@ -12,7 +12,6 @@ class Solution {
         unsigned long n = obstacleGrid[0].size();
         if (obstacleGrid[0][0] == 1)
             return 0;
-
         vector<long long> dp(n, 0);  // long long for prevent calculation overflow
         dp[0] = 1;
         for (unsigned long i = 0; i < m; ++i) {
