@@ -6,45 +6,35 @@ using namespace std;
 class Solution {
   public:
     int uniquePathsWithObstacles(vector<vector<int>> &obstacleGrid) {
-        unsigned long len = obstacleGrid[0].size();
-        if (obstacleGrid[obstacleGrid.size() - 1][len - 1] == 1)
+        unsigned long m = obstacleGrid.size();
+        if (m == 0)
             return 0;
-        vector<unsigned long> dp(len + 1, 0);
-        if(obstacleGrid[0][0] == 0) {
-            dp[0] = 1;
-            for(unsigned long i = 1; i < len; ++i) {
-                if(obstacleGrid[0][i] == 0) {
-                    dp[i] = 1;
-                } else {
-                    break;
-                }
-            }
+        unsigned long n = obstacleGrid[0].size();
+        if (obstacleGrid[0][0] == 1)
+            return 0;
 
-        }
-        if (obstacleGrid[0][0] == 0) {
-            dp[0] = 1;
-        } else {
-            dp[0] = 0;
-        }
-        for (unsigned long i = 1; i < obstacleGrid.size(); ++i) {
-            if (obstacleGrid[i][0] == 0) {
-                dp[0] = dp[0];
-            } else {
-                dp[0] = 0;
-            }
-            for (unsigned long j = 1; j < len; ++j) {
-                if (obstacleGrid[i][j] == 0) {
-                    dp[j] = dp[j - 1] + dp[j];
-                } else {
+        vector<long long> dp(n, 0);  // long long for prevent calculation overflow
+        dp[0] = 1;
+        for (unsigned long i = 0; i < m; ++i) {
+            for (unsigned long j = 0; j < n; ++j) {
+                if (obstacleGrid[i][j]) {
                     dp[j] = 0;
+                    continue;
+                }
+                if (i > 0) {
+                    dp[j] = dp[j];
+                }
+                if (j > 0) {
+                    dp[j] += dp[j - 1];
                 }
             }
         }
-        return dp[len - 1];
+        return dp[n - 1];
     }
 };
 
 void test_case_1() {
+        cout << endl;
     vector<vector<int>> obstacleGrid{{0, 0, 0}, {0, 1, 0}, {0, 0, 0}};
     int res = Solution().uniquePathsWithObstacles(obstacleGrid);
     cout << res << endl;
@@ -52,6 +42,7 @@ void test_case_1() {
 }
 
 void test_case_2() {
+        cout << endl;
     vector<vector<int>> obstacleGrid{{0}};
     int res = Solution().uniquePathsWithObstacles(obstacleGrid);
     cout << res << endl;
@@ -59,6 +50,7 @@ void test_case_2() {
 }
 
 void test_case_3() {
+        cout << endl;
     vector<vector<int>> obstacleGrid{{0, 1}};
     int res = Solution().uniquePathsWithObstacles(obstacleGrid);
     cout << res << endl;
@@ -79,11 +71,19 @@ void test_case_5() {
     assert(res == 1);
 }
 
+void test_case_6() {
+    vector<vector<int>> obstacleGrid{{0,0}};
+    int res = Solution().uniquePathsWithObstacles(obstacleGrid);
+    cout << res << endl;
+    assert(res == 1);
+}
+
 int main(void) {
     test_case_1();
     test_case_2();
     test_case_3();
     test_case_4();
     test_case_5();
+    test_case_6();
     return 0;
 }
