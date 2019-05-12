@@ -13,7 +13,7 @@ class Solution {
         vector<int> dp(triangle.size(), 0);
         int res = numeric_limits<int>::max();
         dp[0] = triangle[0][0];
-        for (unsigned long i = 1; i < triangle.size(); ++i) {
+        for (int i = 1; i < (int)triangle.size(); ++i) {
             for (int j = i; j >= 0; --j) {
                 if (j == 0) {
                     dp[0] = triangle[i][0] + dp[0];
