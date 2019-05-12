@@ -18,6 +18,7 @@ class Solution {
                 if (obstacleGrid[i][j]) {
                     dp[j] = 0;
                     continue;
+
                 }
                 if (i > 0) {
                     dp[j] = dp[j];
@@ -32,47 +33,38 @@ class Solution {
 };
 
 void test_case_1() {
-        cout << endl;
     vector<vector<int>> obstacleGrid{{0, 0, 0}, {0, 1, 0}, {0, 0, 0}};
     int res = Solution().uniquePathsWithObstacles(obstacleGrid);
-    cout << res << endl;
     assert(res == 2);
 }
 
 void test_case_2() {
-        cout << endl;
     vector<vector<int>> obstacleGrid{{0}};
     int res = Solution().uniquePathsWithObstacles(obstacleGrid);
-    cout << res << endl;
     assert(res == 1);
 }
 
 void test_case_3() {
-        cout << endl;
     vector<vector<int>> obstacleGrid{{0, 1}};
     int res = Solution().uniquePathsWithObstacles(obstacleGrid);
-    cout << res << endl;
     assert(res == 0);
 }
 
 void test_case_4() {
     vector<vector<int>> obstacleGrid{{1, 0}};
     int res = Solution().uniquePathsWithObstacles(obstacleGrid);
-    cout << res << endl;
     assert(res == 0);
 }
 
 void test_case_5() {
     vector<vector<int>> obstacleGrid{{0}, {0}};
     int res = Solution().uniquePathsWithObstacles(obstacleGrid);
-    cout << res << endl;
     assert(res == 1);
 }
 
 void test_case_6() {
     vector<vector<int>> obstacleGrid{{0,0}};
     int res = Solution().uniquePathsWithObstacles(obstacleGrid);
-    cout << res << endl;
     assert(res == 1);
 }
 
