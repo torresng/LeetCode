@@ -34,38 +34,32 @@ class Solution {
 
 void test_case_1() {
     vector<vector<int>> obstacleGrid{{0, 0, 0}, {0, 1, 0}, {0, 0, 0}};
-    int res = Solution().uniquePathsWithObstacles(obstacleGrid);
-    assert(res == 2);
+    assert(Solution().uniquePathsWithObstacles(obstacleGrid) == 2);
 }
 
 void test_case_2() {
     vector<vector<int>> obstacleGrid{{0}};
-    int res = Solution().uniquePathsWithObstacles(obstacleGrid);
-    assert(res == 1);
+    assert(Solution().uniquePathsWithObstacles(obstacleGrid) == 1);
 }
 
 void test_case_3() {
     vector<vector<int>> obstacleGrid{{0, 1}};
-    int res = Solution().uniquePathsWithObstacles(obstacleGrid);
-    assert(res == 0);
+    assert(Solution().uniquePathsWithObstacles(obstacleGrid) == 0);
 }
 
 void test_case_4() {
     vector<vector<int>> obstacleGrid{{1, 0}};
-    int res = Solution().uniquePathsWithObstacles(obstacleGrid);
-    assert(res == 0);
+    assert(Solution().uniquePathsWithObstacles(obstacleGrid) == 0);
 }
 
 void test_case_5() {
     vector<vector<int>> obstacleGrid{{0}, {0}};
-    int res = Solution().uniquePathsWithObstacles(obstacleGrid);
-    assert(res == 1);
+    assert(Solution().uniquePathsWithObstacles(obstacleGrid) == 1);
 }
 
 void test_case_6() {
     vector<vector<int>> obstacleGrid{{0,0}};
-    int res = Solution().uniquePathsWithObstacles(obstacleGrid);
-    assert(res == 1);
+    assert(Solution().uniquePathsWithObstacles(obstacleGrid) == 1);
 }
 
 int main(void) {
