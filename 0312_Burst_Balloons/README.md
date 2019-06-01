@@ -27,10 +27,10 @@ Explanation: nums = [3,1,5,8] --> [3,5,8] -->   [3,8]   -->  [8]  --> []
 1. 當 i == j 時，即 [ i , j ] 只有一個數時，dp[i][j] 的值為 
   
 ```
-dp[i][j] = nums[i-1] * nums[i] * nums[i+1]。
+dp[i][j] = nums[i-1] * nums[i] * nums[i+1]
 ```
 
-2. 當 i = j + 1 時，即 [i , j] 有兩個數，dp[i][j] 的值為 
+2. 當 i = j + 1 時，即 [ i , j ] 有兩個數，dp[ i ] [ j ] 的值為 
 
 ```
 dp[i][j] = max(nums[i-1] * nums[i] * nums[i+1] + nums[i-1] * nums[j] * nums[j+1], 
@@ -39,9 +39,9 @@ dp[i][j] = max(nums[i-1] * nums[i] * nums[i+1] + nums[i-1] * nums[j] * nums[j+1]
                dp[i+1][j] + nums[i-1] * nums[i] * nums[j+1])
 ```
 
-這里解釋一下，當打破了第i個氣球，獲得 nums[ i - 1 ] * nums[ i ] * nums[ i + 1 ] 硬幣，接下來只能打破第j個氣球，但因為打破第i個氣球前，i和j是相隣的，打破第i個氣球後，就變成了第i-1個氣球和第j個氣球相隣，所以之後打破第j個氣球時所獲得的硬幣為 nums[ i - 1 ] * nums[ j ] * nums[ j + 1 ]。先打破第j個氣球也同理，然後 dp[ i ] [ j ] 的值為兩者的最大者。
+這里解釋一下，當打破了第i個氣球，獲得 nums[ i - 1 ] * nums[ i ] * nums[ i + 1 ] 硬幣，接下來只能打破第 j 個氣球，但因為打破第i個氣球前，i 和 j 是相隣的，打破第 i 個氣球後，就變成了第 i - 1 個氣球和第 j 個氣球相隣，所以之後打破第 j 個氣球時所獲得的硬幣為 nums[ i - 1 ] * nums[ j ] * nums[ j + 1 ]。先打破第j個氣球也同理，然後 dp[ i ] [ j ] 的值為兩者的最大者。
 
-那麼當 i < j 時，dp[ i ] [ j ] 的值是甚麼？我們可以用 k 遍歷整個 [ i , j ]，當k位置區間 [ i , j ] 時，dp[ i ] [ j ]  的值可以從dp[ i ] [ k - 1] 和 dp [ k + 1 ] [ j ] 的值得出
+那麼當 i < j 時，dp[ i ] [ j ] 的值是甚麼？我們可以用 k 遍歷整個 [ i , j ]，k 代表在[ i , j ]區間中最後一個被打破的氣球，那麼dp[ i ] [ j ]  的值可以從dp[ i ] [ k - 1] 和 dp [ k + 1 ] [ j ] 的值得出
 
 ```
 dp[i][j] = max(dp[i][j], dp[i][k-1] + nums[i-1] * nums[k] * nums[j+1] + dp[k+1][j])
