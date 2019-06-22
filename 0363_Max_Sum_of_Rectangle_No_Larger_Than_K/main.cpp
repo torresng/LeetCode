@@ -22,18 +22,30 @@ class Solution {
                     sum[k] += matrix[k][r];
                 }
 
-                // 參見 https://github.com/torresng/Algorithms_practice/tree/master/cpp/max_sum
-                int curSum = 0;
-                set<int> s{0};
-                for (auto a : sum) {
-                    curSum += a;
-                    auto iter = s.lower_bound(curSum - k);
-                    if (iter != s.end()) {
-                        res = max(res, curSum - *iter);
-                    }
-                    s.insert(curSum);
+                int m = a(sum, k);
+                if (m == k) {
+                    return k;
                 }
+                res = max(res, m);
             }
+        }
+        return res;
+    }
+
+  private:
+    // reference
+    // https://github.com/torresng/Algorithms_practice/tree/master/cpp/max_sum
+    int a(vector<int> &sum, int k) {
+        int res = numeric_limits<int>::min();
+        int curSum = 0;
+        set<int> s{0};
+        for (auto a : sum) {
+            curSum += a;
+            auto it = s.lower_bound(curSum - k);
+            if (it != s.end()) {
+                res = max(res, curSum - *it);
+            }
+            s.insert(curSum);
         }
         return res;
     }
