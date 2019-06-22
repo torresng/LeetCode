@@ -8,24 +8,29 @@ using namespace std;
 class Solution {
   public:
     int findMin(vector<int> &nums) {
+        int n = nums.size();
+        if (nums[0] < nums[n - 1]) {
+            return nums[0];
+        }
+
         int l = 0;
-        int r = nums.size() - 1;
-
-        int res = numeric_limits<int>::max();
-        while (l <= r) {
+        int r = n - 1;
+        while (l < r) {
             int mid = (l + r) >> 1;
-            res = min(res, nums[mid]);
 
-            if (nums[l] <= nums[mid]) {
-                res = min(res, nums[l]);
+            if (mid + 1 < n && nums[mid] > nums[mid + 1]) {
+                return nums[mid + 1];
+            }
+            if (mid - 1 < n && nums[mid - 1] > nums[mid]) {
+                return nums[mid];
+            }
+            if (nums[l] < nums[mid]) {
                 l = mid + 1;
             } else {
-                res = min(res, nums[mid + 1]);
                 r = mid - 1;
             }
         }
-
-        return res;
+        return nums[l];
     }
 };
 
@@ -45,7 +50,7 @@ void test_case_3() {
 }
 
 void test_case_4() {
-    vector<int> nums{3,1,2};
+    vector<int> nums{3, 1, 2};
     assert(Solution().findMin(nums) == 1);
 }
 
