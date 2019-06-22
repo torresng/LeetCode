@@ -22,6 +22,7 @@ class Solution {
                     sum[k] += matrix[k][r];
                 }
 
+                // 參見 https://github.com/torresng/Algorithms_practice/tree/master/cpp/max_sum
                 int curSum = 0;
                 set<int> s{0};
                 for (auto a : sum) {
