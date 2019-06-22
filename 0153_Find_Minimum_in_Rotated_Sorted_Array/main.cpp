@@ -7,6 +7,7 @@ using namespace std;
 
 class Solution {
   public:
+    // 4ms
     int findMin(vector<int> &nums) {
         int n = nums.size();
         if (nums[0] < nums[n - 1]) {
@@ -32,6 +33,24 @@ class Solution {
         }
         return nums[l];
     }
+
+    // 0ms
+    /*
+    int findMin(vector<int> &nums) {
+        int n = nums.size();
+        int l = 0;
+        int r = nums.size() - 1;
+        while (l < r) {
+            int mid = (l + r) >> 1;
+            if (nums[mid] > nums[r]) {
+                l = mid + 1;
+            } else {
+                r = mid;
+            }
+        }
+        return nums[l];
+    }
+    */
 };
 
 void test_case_1() {
