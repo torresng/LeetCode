@@ -40,26 +40,27 @@ class Solution {
 
 void test_case_1() {
     vector<int> nums{4, 5, 6, 7, 0, 1, 2};
-    cout << Solution().search(nums, 0) << endl;
     assert(Solution().search(nums, 0) == 4);
 }
 
 void test_case_2() {
     vector<int> nums{2, 4, 5, 6, 7, 0, 1};
-    cout << Solution().search(nums, 0) << endl;
     assert(Solution().search(nums, 0) == 5);
 }
 
 void test_case_3() {
     vector<int> nums{5, 6, 7, 0, 1, 2, 4};
-    cout << Solution().search(nums, 0) << endl;
     assert(Solution().search(nums, 0) == 3);
 }
 
 void test_case_4() {
     vector<int> nums{7, 0, 1, 2, 4, 5, 6};
-    cout << Solution().search(nums, 0) << endl;
     assert(Solution().search(nums, 0) == 1);
+}
+
+void test_case_5() {
+    vector<int> nums{3,1};
+    assert(Solution().search(nums, 1) == 1);
 }
 
 int main(void) {
@@ -67,6 +68,7 @@ int main(void) {
     test_case_2();
     test_case_3();
     test_case_4();
+    test_case_5();
 
     return 0;
 }
