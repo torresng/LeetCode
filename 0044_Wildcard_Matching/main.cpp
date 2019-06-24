@@ -6,7 +6,7 @@ using namespace std;
 
 class Solution {
   public:
-    // 4ms
+    // Greedy 4ms
     bool isMatch(string s, string p) {
         size_t i = 0;
         size_t j = 0;
