@@ -6,7 +6,34 @@ using namespace std;
 
 class Solution {
   public:
+    bool isMatch(string s, string p) {
+        size_t i = 0;
+        size_t j = 0;
+        int si = -1;
+        int sj = -1;
+        while (i < s.size()) {
+            if ((s[i] == p[j]) || p[j] == '?') {
+                ++i;
+                ++j;
+            } else if (p[j] == '*') {
+                si = i;
+                sj = j++;
+            } else if (sj != -1) {
+                j = sj;
+                i = ++si;
+            } else {
+                return false;
+            }
+        }
+
+        while (j < p.size() && p[j] == '*') {
+            ++j;
+        }
+        return (j == p.size());
+    }
+
     // Dynamic Programming
+    /*
     bool isMatch(string s, string p) {
         int n = s.size();
         int m = p.size();
@@ -18,14 +45,14 @@ class Solution {
             for (int j = 1; j <= m; ++j) {
                 if (p[j - 1] != '*') {
                     dp[i][j] = (i > 0) && dp[i - 1][j - 1] &&
-                               ((s[i - 1] == p[j - 1]) || (p[j - 1] == '?'));
-                } else {
-                    dp[i][j] = ((i > 0) && dp[i - 1][j]) || dp[i][j - 1];
+                               ((s[i - 1] == p[j - 1]) || (p[j - 1] ==
+    '?')); } else { dp[i][j] = ((i > 0) && dp[i - 1][j]) || dp[i][j - 1];
                 }
             }
         }
         return dp[n][m];
     }
+    */
 };
 
 void test_case_1() { assert(Solution().isMatch("aa", "a") == false); }
