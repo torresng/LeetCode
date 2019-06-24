@@ -6,6 +6,7 @@ using namespace std;
 
 class Solution {
   public:
+    // 4ms
     bool isMatch(string s, string p) {
         size_t i = 0;
         size_t j = 0;
@@ -32,7 +33,7 @@ class Solution {
         return (j == p.size());
     }
 
-    // Dynamic Programming
+    // Dynamic Programming 100ms
     /*
     bool isMatch(string s, string p) {
         int n = s.size();
