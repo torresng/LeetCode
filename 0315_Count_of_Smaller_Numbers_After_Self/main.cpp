@@ -45,10 +45,6 @@ void test_case_1() {
     vector<int> ans{2, 1, 1, 0};
 
     vector<int> res = Solution().countSmaller(nums);
-    for (auto v : res) {
-        cout << v << " ";
-    }
-    cout << endl;
     assert(compare(ans, res) == true);
 }
 
