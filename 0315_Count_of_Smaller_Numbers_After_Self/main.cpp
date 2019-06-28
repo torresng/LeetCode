@@ -39,7 +39,7 @@ class Solution {
     }
 
     /*
-     * 156ms
+     * Binary Search 156ms
      */
     /*
     vector<int> countSmaller(vector<int> &nums) {
