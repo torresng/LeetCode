@@ -29,12 +29,10 @@ class Solution {
         }
         if (value < root->value) {
             root->count++;
-            int res = insert(root->left, value);
-            return res;
+            return insert(root->left, value);
         }
-        int res = root->count + insert(root->right, value) +
-                  (value > root->value ? 1 : 0);
-        return res;
+        return root->count + insert(root->right, value) +
+               (value > root->value ? 1 : 0);
     }
 };
 
