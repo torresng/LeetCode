@@ -5,6 +5,9 @@ using namespace std;
 
 class Solution {
   public:
+    /*
+     * Binary Tree 28ms
+     */
     vector<int> countSmaller(vector<int> &nums) {
         int n = nums.size();
         vector<int> res(n);
@@ -34,6 +37,32 @@ class Solution {
         return root->count + insert(root->right, value) +
                (value > root->value ? 1 : 0);
     }
+
+    /*
+     * 156ms
+     */
+    /*
+    vector<int> countSmaller(vector<int> &nums) {
+        int n = nums.size();
+
+        vector<int> t, res(n);
+        for (int i = n - 1; i >= 0; --i) {
+            int l = 0, r = t.size();
+            while (l < r) {
+                int mid = (l + r) >> 1;
+                if (t[mid] >= nums[i]) {
+                    r = mid;
+                } else {
+                    l = mid + 1;
+                }
+            }
+            res[i] = l;
+            t.insert(t.begin() + l, nums[i]);
+        }
+
+        return res;
+    }
+    */
 };
 
 bool compare(vector<int> &nums1, vector<int> &nums2) {
