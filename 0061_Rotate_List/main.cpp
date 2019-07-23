@@ -15,7 +15,7 @@ struct ListNode {
 class Solution {
   public:
     ListNode *rotateRight(ListNode *head, int k) {
-        if (head == NULL || k == 0) {
+        if (!head) {
             return head;
         }
         int n = 0;
@@ -26,6 +26,9 @@ class Solution {
         }
 
         k %= n;
+        if (!k) {
+            return head;
+        }
 
         ListNode *dummy = new ListNode(-1);
         dummy->next = head;
