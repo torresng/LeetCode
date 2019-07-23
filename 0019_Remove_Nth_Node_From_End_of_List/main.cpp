@@ -17,18 +17,17 @@ class Solution {
         ListNode *dummy = new ListNode(-1);
         dummy->next = head;
 
-        ListNode *first = dummy, *second = dummy;
+        ListNode *slow = dummy, *fast = dummy;
         while (n) {
-            second = second->next;
+            fast = fast->next;
             --n;
         }
-
-        while (second->next) {
-            first = first->next;
-            second = second->next;
+        while (fast->next) {
+            slow = slow->next;
+            fast = fast->next;
         }
 
-        first->next = first->next->next;
+        slow->next = slow->next->next;
 
         return dummy->next;
     }
