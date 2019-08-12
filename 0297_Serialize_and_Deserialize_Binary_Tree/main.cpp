@@ -106,7 +106,8 @@ void test_case_1() {
     assert(compare(res2, ans2) == true);
 }
 
-int main() { 
+int main() {
     test_case_1();
-    
-    return 0; }
+
+    return 0;
+}
