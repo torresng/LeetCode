@@ -5,30 +5,25 @@ using namespace std;
 class Solution {
   public:
     int uniquePathsWithObstacles(vector<vector<int>> &obstacleGrid) {
-        unsigned long m = obstacleGrid.size();
-        if (m == 0)
-            return 0;
-        unsigned long n = obstacleGrid[0].size();
-        if (obstacleGrid[0][0] == 1)
-            return 0;
-        vector<long long> dp(n, 0);  // long long for prevent calculation overflow
-        dp[0] = 1;
-        for (unsigned long i = 0; i < m; ++i) {
-            for (unsigned long j = 0; j < n; ++j) {
+        int n = obstacleGrid.size(), m = obstacleGrid[0].size();
+        vector<vector<long long>> dp(n, vector<long long>(m));
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
                 if (obstacleGrid[i][j]) {
-                    dp[j] = 0;
                     continue;
-
+                }
+                if (!i && !j) {
+                    dp[0][0] = 1;
                 }
                 if (i > 0) {
-                    dp[j] = dp[j];
+                    dp[i][j] += dp[i - 1][j];
                 }
                 if (j > 0) {
-                    dp[j] += dp[j - 1];
+                    dp[i][j] += dp[i][j - 1];
                 }
             }
         }
-        return dp[n - 1];
+        return dp[n - 1][m - 1];
     }
 };
 
@@ -58,7 +53,7 @@ void test_case_5() {
 }
 
 void test_case_6() {
-    vector<vector<int>> obstacleGrid{{0,0}};
+    vector<vector<int>> obstacleGrid{{0, 0}};
     assert(Solution().uniquePathsWithObstacles(obstacleGrid) == 1);
 }
 
