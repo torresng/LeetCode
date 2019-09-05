@@ -8,13 +8,27 @@ using namespace std;
 class Solution {
   public:
     int minimumTotal(vector<vector<int>> &triangle) {
-        vector<int> dp(triangle.back());
-        for (int i = triangle.size() - 2; i >= 0; --i) {
-            for (unsigned long j = 0; j < triangle[i].size(); ++j) {
-                dp[j] = min(triangle[i][j] + dp[j], triangle[i][j] + dp[j + 1]);
+        int n = triangle.size();
+        vector<vector<long long>> f(2, vector<long long>(n));
+        f[0][0] = triangle[0][0];
+        for (int i = 1; i < n; i++) {
+            for (int j = 0; j <= i; j++) {
+                f[i & 1][j] = INT_MAX;
+                if (j > 0) {
+                    f[i & 1][j] =
+                        min(f[i & 1][j], f[i - 1 & 1][j - 1] + triangle[i][j]);
+                }
+                if (j < i) {
+                    f[i & 1][j] =
+                        min(f[i & 1][j], f[i - 1 & 1][j] + triangle[i][j]);
+                }
             }
         }
-        return dp[0];
+        long long res = INT_MAX;
+        for (int i = 0; i < n; i++) {
+            res = min(res, f[n - 1 & 1][i]);
+        }
+        return res;
     }
 };
 
