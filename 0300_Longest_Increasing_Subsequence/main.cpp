@@ -6,34 +6,22 @@ using namespace std;
 class Solution {
   public:
     int lengthOfLIS(vector<int> &nums) {
-        if (nums.empty()) {
-            return 0;
-        }
         int n = nums.size();
-        vector<int> helper;
-        for (int i = 0; i < n; ++i) {
-            int index = binarySearch(helper, nums[i]);
-            if (index < (int)helper.size()) {
-                helper[index] = nums[i];
-            } else {
-                helper.push_back(nums[i]);
+        vector<int> f(n);
+
+        for (int i = 0; i < n; i++) {
+            f[i] = 1;
+            for (int j = 0; j < i; j++) {
+                if (nums[j] < nums[i]) {
+                    f[i] = max(f[i], f[j] + 1);
+                }
             }
         }
-
-        return helper.size();
-    }
-
-    int binarySearch(vector<int> &nums, int key) {
-        int l = 0, r = nums.size() - 1;
-        while (l <= r) {
-            int mid = (l + r) >> 1;
-            if (nums[mid] >= key) {
-                r = mid - 1;
-            } else {
-                l = mid + 1;
-            }
+        int res = 0;
+        for (int i = 0; i < n; i++) {
+            res = max(res, f[i]);
         }
-        return l;
+        return res;
     }
 };
 
