@@ -16,8 +16,10 @@ class Solution {
         while (l < r) {
             int mid = (l + r) >> 1;
             if (nums[0] > nums[mid]) {
+                // 如果nums[0] > nums[mid]，说明答案就在nums[0, mid]中
                 r = mid;
             } else {
+                // 否则nums[mid]肯定不是答案
                 l = mid + 1;
             }
         }
