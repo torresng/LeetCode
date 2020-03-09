@@ -10,7 +10,6 @@ class Solution {
             return {-1, -1};
         }
         vector<int> res;
-
         int n = nums.size();
         int l = 0, r = n - 1;
         while (l < r) {
@@ -25,7 +24,6 @@ class Solution {
         if (nums[l] != target) {
             return {-1, -1};
         }
-
         res.push_back(l);
 
         l = 0, r = n - 1;
@@ -37,7 +35,6 @@ class Solution {
                 r = mid - 1;
             }
         }
-
         res.push_back(l);
 
         return res;
