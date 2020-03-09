@@ -10,7 +10,6 @@ class Solution {
             return false;
         }
         int n = matrix.size(), m = matrix[0].size();
-
         int l = 0, r = n * m - 1;
         while (l < r) {
             int mid = (l + r) >> 1;
