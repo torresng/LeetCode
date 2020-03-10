@@ -14,24 +14,20 @@ struct TreeNode {
 
 class Solution {
   public:
+    int ans = 0;
     int diameterOfBinaryTree(TreeNode *root) {
         dfs(root);
-        return res;
+        return ans;
     }
 
-  private:
-    int res = 0;
-
-    int dfs(TreeNode *p) {
-        if (!p) {
+    int dfs(TreeNode *root) {
+        if (!root) {
             return 0;
         }
-
-        int left = dfs(p->left);
-        int right = dfs(p->right);
-
-        res = max(res, left + right);
-        return max(left + 1, right + 1);
+        int l = dfs(root->left);
+        int r = dfs(root->right);
+        ans = max(ans, l + r);
+        return max(l, r) + 1;
     }
 };
 
