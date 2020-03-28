@@ -1,5 +1,6 @@
 class Solution {
   public:
+    // T = O(n), S = O(1)
     bool searchMatrix(vector<vector<int>> &matrix, int target) {
         if (matrix.empty() || matrix[0].empty()) {
             return false;
