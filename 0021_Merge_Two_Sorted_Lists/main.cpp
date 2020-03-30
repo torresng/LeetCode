@@ -6,7 +6,7 @@
  *     ListNode(int x) : val(x), next(NULL) {}
  * };
  */
-// T = O(n), S = O(n)
+// T = O(n+m), S = O(1)
 class Solution {
   public:
     ListNode *mergeTwoLists(ListNode *l1, ListNode *l2) {
