@@ -1,3 +1,4 @@
+// T = O(n), S = O(1)
 class Solution {
   public:
     int maxSubArray(vector<int> &nums) {
