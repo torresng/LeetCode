@@ -1,32 +1,28 @@
-#include <iostream>
-#include <stack>
-
-using namespace std;
-
+// Stack
 class MinStack {
-    stack<int> stk, stk_min;
-
   public:
+    stack<int> st, min_st;
     /** initialize your data structure here. */
     MinStack() {}
 
     void push(int x) {
-        stk.push(x);
-        if (stk_min.empty()) {
-            stk_min.push(x);
-        } else {
-            stk_min.push(min(x, stk_min.top()));
+        st.push(x);
+        if (min_st.empty() || x <= min_st.top()) {
+            min_st.push(x);
         }
     }
 
     void pop() {
-        stk.pop();
-        stk_min.pop();
+        int x = st.top();
+        st.pop();
+        if (min_st.top() == x) {
+            min_st.pop();
+        }
     }
 
-    int top() { return stk.top(); }
+    int top() { return st.top(); }
 
-    int getMin() { return stk_min.top(); }
+    int getMin() { return min_st.top(); }
 };
 
 /**
@@ -38,19 +34,47 @@ class MinStack {
  * int param_4 = obj->getMin();
  */
 
-void test_case_1() {
-    MinStack minStack = MinStack();
-    minStack.push(-2);
-    minStack.push(0);
-    minStack.push(-3);
-    assert(minStack.getMin() == -3);
-    minStack.pop();
-    assert(minStack.top() == 0);
-    assert(minStack.getMin() - 2);
-}
-
-int main() {
-    test_case_1();
-
-    return 0;
-}
+// Link
+class MinStack {
+public:
+    struct Node {
+        int val;
+        Node *next;
+        Node(int v, Node *n) {
+            val = v;
+            next = n;
+        }
+    };
+    
+    Node *head = nullptr;
+    int min_val = INT_MAX;
+    /** initialize your data structure here. */
+    MinStack() {
+        
+    }
+    
+    void push(int x) {
+        if(x <= min_val) {
+            head = new Node(min_val, head);
+            min_val = x;
+        }
+        head = new Node(x, head);
+    }
+    
+    void pop() {
+        if(head->val == min_val) {
+            min_val = head->next->val;
+            head = head->next->next;
+        } else {
+            head = head->next;
+        }
+    }
+    
+    int top() {
+        return head->val;
+    }
+    
+    int getMin() {
+        return min_val;
+    }
+};
