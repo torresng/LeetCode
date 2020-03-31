@@ -1,54 +1,36 @@
-#include <algorithm>
-#include <iostream>
-#include <string>
-#include <unordered_map>
-
-using namespace std;
-
+// T = O(n), S = O(m)
 class Solution {
   public:
     int lengthOfLongestSubstring(string s) {
         int res = 0;
-        unordered_map<char, int> hash;
-        for (int i = 0, j = 0; i < s.size(); i++) {
-            hash[s[i]]++;
-            while (hash[s[i]] > 1) {
-                hash[s[j++]]--;
+        unordered_map<char, int> map;
+        int i = 0, j = 0;
+        for (; i < s.size(); i++) {
+            for (; j < s.size(); j++) {
+                if (map[s[j]] == 1) {
+                    break;
+                }
+                map[s[j]]++;
             }
-            res = max(res, i - j + 1);
+            res = max(res, j - i);
+            map[s[i]]--;
         }
         return res;
     }
 };
 
-void test_case_1() {
-    string s = "abcabcbb";
-    int ans = 3;
-
-    int res = Solution().lengthOfLongestSubstring(s);
-    assert(res == ans);
-}
-
-void test_case_2() {
-    string s = "bbbbb";
-    int ans = 1;
-
-    int res = Solution().lengthOfLongestSubstring(s);
-    assert(res == ans);
-}
-
-void test_case_3() {
-    string s = "pwwkew";
-    int ans = 3;
-
-    int res = Solution().lengthOfLongestSubstring(s);
-    assert(res == ans);
-}
-
-int main() {
-    test_case_1();
-    test_case_2();
-    test_case_3();
-
-    return 0;
-}
+// T = O(n), S = O(m)
+class Solution {
+  public:
+    int lengthOfLongestSubstring(string s) {
+        int res = 0;
+        vector<int> index(255, -1);
+        int i = 0, j = 0;
+        for (; j < s.size(); j++) {
+            i = max(index[s[j]] + 1, i);
+            res = max(res, j - i + 1);
+            index[s[j]] = j;
+        }
+        return res;
+    }
+};
