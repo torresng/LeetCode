@@ -1,72 +1,46 @@
-#include <iostream>
-#include <stack>
-#include <vector>
-
-using namespace std;
-
 /**
  * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
  */
-struct TreeNode {
-    int val;
-    TreeNode *left;
-    TreeNode *right;
-    TreeNode(int x) : val(x), left(NULL), right(NULL) {}
-};
-
+// Recursive T = O(n), S = O(n)
 class Solution {
   public:
     vector<int> inorderTraversal(TreeNode *root) {
-        vector<int> res;
-
-        stack<TreeNode *> stk;
-
-        TreeNode *p = root;
-        while (p || !stk.empty()) {
-            while (p) {
-                stk.push(p);
-                p = p->left;
-            }
-            p = stk.top();
-            stk.pop();
-            res.push_back(p->val);
-            p = p->right;
+        if (root == nullptr) {
+            return {};
         }
-
-        return res;
+        vector<int> left = inorderTraversal(root->left);
+        vector<int> right = inorderTraversal(root->right);
+        left.push_back(root->val);
+        left.insert(left.end(), right.begin(), right.end());
+        return left;
     }
 };
 
-bool compare(vector<int> &nums1, vector<int> &nums2) {
-    if (nums1.size() != nums2.size()) {
-        return false;
-    }
-    sort(nums1.begin(), nums1.end());
-    sort(nums2.begin(), nums2.end());
-    for (unsigned i = 0; i < nums1.size(); ++i) {
-        if (nums1[i] != nums2[i]) {
-            return false;
+// Iteration T = O(n), S = O(n)
+class Solution {
+  public:
+    vector<int> inorderTraversal(TreeNode *root) {
+        if (root == nullptr) {
+            return {};
         }
+        vector<int> res;
+        stack<TreeNode *> q;
+        while (root != nullptr || !q.empty()) {
+            while (root != nullptr) {
+                q.push(root);
+                root = root->left;
+            }
+            TreeNode *p = q.top();
+            q.pop();
+            res.push_back(p->val);
+            root = p->right;
+        }
+        return res;
     }
-
-    return true;
-}
-
-void test_case_1() {
-    TreeNode *head = new TreeNode(1);
-    TreeNode *p1 = new TreeNode(2);
-    TreeNode *p2 = new TreeNode(3);
-    head->right = p1;
-    p1->left = p2;
-    vector<int> ans{1, 3, 2};
-
-    vector<int> res = Solution().inorderTraversal(head);
-
-    assert(compare(ans, res) == true);
-}
-
-int main() {
-    test_case_1();
-
-    return 0;
-}
+};
