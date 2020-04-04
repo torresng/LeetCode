@@ -7,6 +7,7 @@
  *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
  * };
  */
+// T = O(n), S = O(n)
 class Solution {
   public:
     bool isValidBST(TreeNode *root) { return dfs(root, nullptr, nullptr); }
