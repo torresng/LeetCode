@@ -19,5 +19,6 @@ class Solution {
                 l = mid + 2;
             }
         }
+        return -1;
     }
 };
