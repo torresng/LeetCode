@@ -30,7 +30,7 @@ class Solution {
 };
 
 // Iterate
-// T = O(n), S = O(logn)
+// T = O(n), S = O(n)
 class Solution {
     struct Item {
         TreeNode *parent;
