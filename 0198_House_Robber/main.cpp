@@ -1,40 +1,16 @@
-#include <iostream>
-#include <vector>
-
-using namespace std;
-
+// T = O(n), S = O(1)
 class Solution {
   public:
     int rob(vector<int> &nums) {
-        int n = nums.size();
-        vector<int> f(n + 1), g(n + 1);
-        for (int i = 1; i <= n; i++) {
-            f[i] = max(f[i - 1], g[i - 1]);
-            g[i] = f[i - 1] + nums[i - 1];
+        if (nums.empty()) {
+            return 0;
         }
-        return max(f[n], g[n]);
+        int prev1 = 0, prev2 = 0;
+        for (auto num : nums) {
+            int cur = max(prev1, prev2 + num);
+            prev2 = prev1;
+            prev1 = cur;
+        }
+        return prev1;
     }
 };
-
-void test_case_1() {
-    vector<int> nums{1, 2, 3, 1};
-    int ans = 4;
-
-    int res = Solution().rob(nums);
-    assert(res == ans);
-}
-
-void test_case_2() {
-    vector<int> nums{2, 7, 9, 3, 1};
-    int ans = 12;
-
-    int res = Solution().rob(nums);
-    assert(res == ans);
-}
-
-int main() {
-    test_case_1();
-    test_case_2();
-
-    return 0;
-}
