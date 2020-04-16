@@ -1,54 +1,35 @@
-#include <iostream>
-#include <vector>
-
-using namespace std;
-
+// T = O(n*amount), S = O(n*amount)
 class Solution {
   public:
     int change(int amount, vector<int> &coins) {
         int n = coins.size();
-        vector<int> f(amount + 1);
-        f[0] = 1;
-        for (auto c : coins) {
-            for (int j = c; j <= amount; j++) {
-                f[j] += f[j - c];
+        vector<vector<int>> d(n + 1, vector<int>(amount + 1));
+        for (int i = 0; i <= n; i++) {
+            d[i][0] = 1;
+        }
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= amount; j++) {
+                int useCurCoin = coins[i - 1] <= j ? d[i][j - coins[i - 1]] : 0;
+                d[i][j] = d[i - 1][j] + useCurCoin;
             }
         }
-        return f[amount];
+        return d[n][amount];
     }
 };
 
-void test_case_1() {
-    int amount = 5;
-    vector<int> coins{1, 2, 5};
-    int ans = 4;
-
-    int res = Solution().change(amount, coins);
-    assert(res == ans);
-}
-
-void test_case_2() {
-    int amount = 3;
-    vector<int> coins{2};
-    int ans = 4;
-
-    int res = Solution().change(amount, coins);
-    assert(res == ans);
-}
-
-void test_case_3() {
-    int amount = 10;
-    vector<int> coins{10};
-    int ans = 0;
-
-    int res = Solution().change(amount, coins);
-    assert(res == ans);
-}
-
-int main() {
-    test_case_1();
-    test_case_2();
-    test_case_3();
-
-    return 0;
-}
+// T = O(n*amount), S = O(amount)
+class Solution {
+  public:
+    int change(int amount, vector<int> &coins) {
+        int n = coins.size();
+        vector<int> d(amount + 1);
+        d[0] = 1;
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= amount; j++) {
+                int useCurCoin = coins[i - 1] <= j ? d[j - coins[i - 1]] : 0;
+                d[j] = d[j] + useCurCoin;
+            }
+        }
+        return d[amount];
+    }
+};

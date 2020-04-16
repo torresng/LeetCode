@@ -43,3 +43,12 @@ You can assume that
 - 1 <= coin <= 5000
 - the number of coins is less than 500
 - the answer is guaranteed to fit into signed 32-bit integer
+
+
+## 题解
+
+$$d[i][j]$$ 代表用前 $$coins[i]$$ 个硬帀组成 $$j$$ 元可以有的组合方案数
+
+所以有
+
+$$ d[i][j]= \begin{cases} 0, & \text {if $i$ is 0} \\ 1, & \text{if $j$ is 0} \\ d[i-1][j] + d[i][j-coins[i]] , & \text {if $coins[i]$ <= j} \\ d[i-1][j], & \text{if $coins[i] > j$} \end{cases}  $$
