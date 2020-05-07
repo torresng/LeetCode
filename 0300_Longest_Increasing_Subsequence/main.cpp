@@ -1,3 +1,4 @@
+// T = O(nlog(n)), S = O(n)
 class Solution {
     int binarySearch(vector<int> &arr, int len, int x) {
         int l = 0, r = len;
