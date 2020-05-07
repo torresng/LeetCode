@@ -1,19 +1,18 @@
-#include <deque>
-#include <iostream>
-#include <vector>
-
-using namespace std;
-
+// T = O(n), S = O(k);
 class Solution {
   public:
     vector<int> maxSlidingWindow(vector<int> &nums, int k) {
+        if (nums.empty()) {
+            return {};
+        }
         vector<int> res;
+        int n = nums.size();
         deque<int> q;
-        for (int i = 0; i < (int)nums.size(); i++) {
-            if (!q.empty() && i - k + 1 > q.front()) {
+        for (int i = 0; i < n; i++) {
+            while (!q.empty() && q.front() <= i - k) {
                 q.pop_front();
             }
-            while (!q.empty() && nums[q.back()] <= nums[i]) {
+            while (!q.empty() && nums[q.back()] < nums[i]) {
                 q.pop_back();
             }
             q.push_back(i);
@@ -24,19 +23,3 @@ class Solution {
         return res;
     }
 };
-
-void test_case_1() {
-    vector<int> nums{1, 3, -1, -3, 5, 3, 6, 7};
-    int k = 3;
-    vector<int> ans = {3, 3, 5, 5, 6, 7};
-
-    vector<int> res = Solution().maxSlidingWindow(nums, k);
-
-    assert(res == ans);
-}
-
-int main(void) {
-    test_case_1();
-
-    return 0;
-}
