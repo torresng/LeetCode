@@ -1,59 +1,45 @@
-#include <iostream>
-#include <string>
-
-using namespace std;
-
+// T = O(n), S = O(n)
 class Solution {
   public:
     int longestValidParentheses(string s) {
-        int res = work(s);
-        reverse(s.begin(), s.end());
-        for (auto &c : s) {
-            c ^= 1;
+        if (s.empty()) {
+            return 0;
         }
-        return max(res, work(s));
-    }
-
-  private:
-    int work(string &s) {
-        int res = 0;
         int n = s.size();
-        for (int i = 0, start = 0, cnt = 0; i < n; i++) {
-            if (s[i] == '(') {
-                cnt++;
+        stack<int> st;
+        int res = 0;
+        st.push(-1);
+        for (int i = 0; i < n; i++) {
+            if (st.top() != -1 && s[st.top()] == '(' && s[i] == ')') {
+                st.pop();
+                res = max(res, i - st.top());
             } else {
-                cnt--;
-                if (cnt < 0) {
-                    start = i + 1;
-                    cnt = 0;
-                } else if (!cnt) {
-                    res = max(res, i - start + 1);
-                }
+                st.push(i);
             }
         }
         return res;
     }
 };
 
-void test_case_1() {
-    string s = "(()";
-    int ans = 2;
-
-    int res = Solution().longestValidParentheses(s);
-    assert(res == ans);
-}
-
-void test_case_2() {
-    string s = ")()())";
-    int ans = 4;
-
-    int res = Solution().longestValidParentheses(s);
-    assert(res == ans);
-}
-
-int main() {
-    test_case_1();
-    test_case_2();
-
-    return 0;
-}
+// T = O(n), S = O(n)
+class Solution {
+  public:
+    int longestValidParentheses(string s) {
+        if (s.empty()) {
+            return 0;
+        }
+        int n = s.size(), left = 0, res = 0;
+        vector<int> d(n, 0);
+        for (int i = 0; i < n; i++) {
+            if (s[i] == '(') {
+                left++;
+            } else if (left > 0) {
+                d[i] = d[i - 1] + 2;
+                d[i] += i - d[i] >= 0 ? d[i - d[i]] : 0;
+                res = max(res, d[i]);
+                left--;
+            }
+        }
+        return res;
+    }
+};
