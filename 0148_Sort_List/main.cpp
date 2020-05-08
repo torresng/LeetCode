@@ -1,112 +1,78 @@
-#include <iostream>
-#include <vector>
-
-using namespace std;
-
 /**
  * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
  */
-struct ListNode {
-    int val;
-    ListNode *next;
-    ListNode(int x) : val(x), next(NULL) {}
-};
-
+// Quick Sort
+// T = O(nlog(n)), S = O(n), 432ms
 class Solution {
+    void quickSort(ListNode *start, ListNode *end) {
+        if (start == end || start->next == end) {
+            return;
+        }
+        int pivor = start->val;
+        ListNode *slow = start, *fast = start->next;
+        while (fast != end) {
+            if (fast->val <= pivor) {
+                slow = slow->next;
+                swap(slow->val, fast->val);
+            }
+            fast = fast->next;
+        }
+        swap(start->val, slow->val);
+        quickSort(start, slow);
+        quickSort(slow->next, end);
+    }
+
   public:
     ListNode *sortList(ListNode *head) {
-        int n = 0;
-        for (ListNode *p = head; p; p = p->next) {
-            ++n;
-        }
+        quickSort(head, nullptr);
+        return head;
+    }
+};
 
-        ListNode *dummy = new ListNode(-1);
-        dummy->next = head;
-        for (int i = 1; i < n; i *= 2) {
-            ListNode *begin = dummy;
-            for (int j = 0; j + i < n; j += i * 2) {
-                ListNode *first = begin->next, *second = begin->next;
-                for (int k = 0; k < i; ++k) {
-                    second = second->next;
-                }
-                int f = 0, s = 0;
-                while (f < i && s < i && second) {
-                    if (first->val <= second->val) {
-                        begin->next = first;
-                        begin = first;
-                        first = first->next;
-                        ++f;
-                    } else {
-                        begin->next = second;
-                        begin = second;
-                        second = second->next;
-                        ++s;
-                    }
-                }
-                while (f < i) {
-                    begin = begin->next = first;
-                    first = first->next;
-                    ++f;
-                }
-                while (s < i && second) {
-                    begin = begin->next = second;
-                    second = second->next;
-                    ++s;
-                }
-                begin->next = second;
+// Merge Sort
+// T = O(nlog(n)), S = O(log(n)), 48ms
+class Solution {
+    ListNode *mergeTwoList(ListNode *l1, ListNode *l2) {
+        ListNode *dummy = new ListNode(-1), *p = dummy;
+        while (l1 && l2) {
+            if (l1->val <= l2->val) {
+                p->next = l1;
+                l1 = l1->next;
+            } else {
+                p->next = l2;
+                l2 = l2->next;
             }
+            p = p->next;
+        }
+        if (l1) {
+            p->next = l1;
+        }
+        if (l2) {
+            p->next = l2;
         }
         return dummy->next;
     }
-};
 
-ListNode *initList(vector<int> vec) {
-    ListNode dummy = ListNode(-1);
-    ListNode *p = &dummy;
-    for (auto v : vec) {
-        p->next = new ListNode(v);
-        p = p->next;
-    }
-    return dummy.next;
-}
-
-bool compare(ListNode *head, vector<int> &ans) {
-    int n = ans.size();
-
-    int i = 0;
-    while (head && i < n) {
-        if (head->val != ans[i]) {
-            break;
+  public:
+    ListNode *sortList(ListNode *head) {
+        if (head == nullptr || head->next == nullptr) {
+            return head;
         }
-        head = head->next;
-        ++i;
+        ListNode *slow = head, *fast = head;
+        while (fast->next && fast->next->next) {
+            slow = slow->next;
+            fast = fast->next->next;
+        }
+        ListNode *right = sortList(slow->next);
+        slow->next = nullptr;
+        ListNode *left = sortList(head);
+        return mergeTwoList(left, right);
     }
-    if (head || i < n) {
-        return false;
-    }
-    return true;
-}
-
-void test_case_1() {
-    ListNode *head = initList({4, 2, 1, 3});
-    vector<int> ans{1, 2, 3, 4};
-    ListNode *res = Solution().sortList(head);
-
-    assert(compare(res, ans) == true);
-}
-
-void test_case_2() {
-    ListNode *head = initList({-1, 5, 3, 4, 0});
-    vector<int> ans{-1, 0, 3, 4, 5};
-    ListNode *res = Solution().sortList(head);
-    assert(compare(res, ans) == true);
-}
-
-int main() {
-    test_case_1();
-    /*
-     *test_case_2();
-     */
-
-    return 0;
-}
+};
