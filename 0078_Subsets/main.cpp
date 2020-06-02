@@ -1,58 +1,46 @@
-#include <iostream>
-#include <vector>
-
-using namespace std;
-
+// T = O(2^n), S = O(n)
 class Solution {
+    vector<vector<int>> res;
+    vector<int> v;
+    void dfs(vector<int> &nums, int start) {
+        res.push_back(v);
+        for (int i = start; i < nums.size(); i++) {
+            v.push_back(nums[i]);
+            dfs(nums, i + 1);
+            v.pop_back();
+        }
+    }
+
   public:
     vector<vector<int>> subsets(vector<int> &nums) {
-        vector<vector<int>> res;
-        int n = nums.size();
-        for (int i = 0; i < (1 << n); i++) {
-            vector<int> now;
-            for (int j = 0; j < n; j++) {
-                if ((i >> j) & 1) {
-                    now.push_back(nums[j]);
-                }
-            }
-            res.push_back(now);
+        if (nums.empty()) {
+            return {};
         }
-
+        int n = nums.size();
+        dfs(nums, 0);
         return res;
     }
 };
 
-bool compare(vector<vector<int>> v1, vector<vector<int>> v2) {
-    if (v1.size() != v2.size()) {
-        return false;
-    }
-    sort(
-        v1.begin(), v1.end(), [](vector<int> vv1, vector<int> vv2) -> auto {
-            if (vv1.size() != vv2.size()) {
-                return (int)vv1.size() - (int)vv2.size();
-            }
-            for (unsigned i = 0; i < vv1.size(); i++) {
-                if (vv1[i] != vv2[i]) {
-                    return vv1[i] - vv2[i];
+// T = O(n*2^n), S = O(1)
+class Solution {
+  public:
+    vector<vector<int>> subsets(vector<int> &nums) {
+        if (nums.empty()) {
+            return {};
+        }
+        int n = nums.size();
+        int N = pow(2, n);
+        vector<vector<int>> res;
+        for (int i = 0; i < N; i++) {
+            vector<int> v;
+            for (int j = 0; j < n; j++) {
+                if ((i >> j) & 1) {
+                    v.push_back(nums[j]);
                 }
             }
-            return 0;
-        });
-
-    return true;
-}
-
-void test_case_1() {
-    vector<int> nums{1, 2, 3};
-    vector<vector<int>> ans{{3},    {1},    {2},    {1, 2, 3},
-                            {1, 3}, {2, 3}, {1, 2}, {}};
-
-    vector<vector<int>> res = Solution().subsets(nums);
-    assert(compare(res, ans) == true);
-}
-
-int main() {
-    test_case_1();
-
-    return 0;
-}
+            res.push_back(v);
+        }
+        return res;
+    }
+};
