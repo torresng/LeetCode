@@ -1,3 +1,4 @@
+// T = O(log(n)), S = (1)
 class Solution {
   public:
     vector<int> searchRange(vector<int> &nums, int target) {
