@@ -1,3 +1,4 @@
+// T = O(n), S = O(1)
 class Solution {
   public:
     void rotate(vector<int> &nums, int k) {
