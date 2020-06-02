@@ -1,88 +1,55 @@
-#include <vector>
-
-using namespace std;
-
 /**
  * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left),
+ * right(right) {}
+ * };
  */
-struct TreeNode {
-    int val;
-    TreeNode *left;
-    TreeNode *right;
-    TreeNode(int x) : val(x), left(NULL), right(NULL) {}
-};
-
+// T = O(n), S = O(n)
 class Solution {
+    vector<TreeNode *> v;
+    void dfs(TreeNode *root) {
+        if (root == nullptr) {
+            return;
+        }
+        v.push_back(root);
+        dfs(root->left);
+        dfs(root->right);
+    }
+
   public:
     void flatten(TreeNode *root) {
-        TreeNode *cur = root;
-        while (cur) {
-            if (cur->left) {
-                TreeNode *p = cur->left;
-                while (p->right)
-                    p = p->right;
-                p->right = cur->right;
-                cur->right = cur->left;
-                cur->left = nullptr;
-            }
-            cur = cur->right;
+        if (root == nullptr) {
+            return;
+        }
+        dfs(root);
+        TreeNode *p = root;
+        for (int i = 1; i < v.size(); i++) {
+            p->left = nullptr;
+            p->right = v[i];
+            p = p->right;
         }
     }
 };
 
-/*
- * DFS
- *class Solution {
- *  public:
- *    void flatten(TreeNode *root) {
- *        if (root == nullptr)
- *            return;
- *        if (root->left)
- *            flatten(root->left);
- *        if (root->right)
- *            flatten(root->right);
- *        TreeNode *p = root->right;
- *        root->right = root->left;
- *        root->left = nullptr;
- *        while (root->right)
- *            root = root->right;
- *        root->right = p;
- *    }
- *};
- */
+// T = O(n), S = O(n)
+class Solution {
+    TreeNode *p = nullptr;
 
-bool compare(TreeNode *root, vector<int> &ans) {
-    for (int val : ans) {
-        if (root == nullptr)
-            return false;
-        if (root->val != val)
-            return false;
-        if (root->left != nullptr)
-            return false;
-        root = root->right;
+  public:
+    void flatten(TreeNode *root) {
+        if (root == nullptr) {
+            return;
+        }
+        flatten(root->right);
+        flatten(root->left);
+        root->left = nullptr;
+        root->right = p;
+        p = root;
     }
-    return true;
-}
-
-void test_case_1() {
-    TreeNode *root = new TreeNode(1);
-    TreeNode *node1 = new TreeNode(2);
-    TreeNode *node2 = new TreeNode(5);
-    TreeNode *node3 = new TreeNode(3);
-    TreeNode *node4 = new TreeNode(4);
-    TreeNode *node5 = new TreeNode(6);
-    root->left = node1;
-    root->right = node2;
-    node1->left = node3;
-    node1->right = node4;
-    node2->right = node5;
-    vector<int> ans = {1, 2, 3, 4, 5, 6};
-
-    Solution().flatten(root);
-    assert(compare(root, ans));
-}
-
-int main(void) {
-    test_case_1();
-    return 0;
-}
+};
