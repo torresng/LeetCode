@@ -1,3 +1,4 @@
+// T = O(n), S = O(n)
 class Solution {
   public:
     int largestRectangleArea(vector<int> &heights) {
