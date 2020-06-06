@@ -1,48 +1,44 @@
-#include <iostream>
-#include <string>
-#include <unordered_map>
-
-using namespace std;
-
-class Solution {
-  public:
-    string minWindow(string s, string t) {
-        unordered_map<char, int> hash;
-        for (auto c : t) {
-            hash[c]++;
+// T = O(n), S = O(m)
+class Solution
+{
+public:
+    string minWindow(string s, string t)
+    {
+        if (s.empty() || t.empty())
+        {
+            return "";
         }
-        int cnt = hash.size();
-
-        int n = s.size();
-        string res;
-        for (int i = 0, j = 0, c = 0; i < n; i++) {
-            if (hash[s[i]] == 1) {
-                c++;
+        int start = 0, len = INT_MAX, requireCount = t.size();
+        int left = 0, right = 0;
+        vector<int> h(256, 0);
+        for (auto c : t)
+        {
+            h[c]++;
+        }
+        for (; right < s.size(); right++)
+        {
+            char r = s[right];
+            if (h[r] > 0)
+            {
+                requireCount--;
             }
-            hash[s[i]]--;
-            while (hash[s[j]] < 0) {
-                hash[s[j++]]++;
-            }
-            if (c == cnt) {
-                if (res.empty() || (int)res.size() > i - j + 1) {
-                    res = s.substr(j, i - j + 1);
+            h[r]--;
+            while (requireCount == 0)
+            {
+                if (right - left + 1 < len)
+                {
+                    start = left;
+                    len = right - left + 1;
                 }
+                char l = s[left];
+                h[l]++;
+                if (h[l] > 0)
+                {
+                    requireCount++;
+                }
+                left++;
             }
         }
-        return res;
+        return len == INT_MAX ? "" : s.substr(start, len);
     }
 };
-
-void test_case_1() {
-    string s = "ADOBECODEBANC", t = "ABC";
-    string ans = "BANC";
-
-    string res = Solution().minWindow(s, t);
-    assert(res == ans);
-}
-
-int main() {
-    test_case_1();
-
-    return 0;
-}
