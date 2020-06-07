@@ -1,58 +1,68 @@
-#include <iostream>
-#include <vector>
-
-using namespace std;
-
-class Solution {
-    string chars[8] = {"abc", "def",  "ghi", "jkl",
-                       "nmo", "pqrs", "tuv", "wxyz"};
-
-  public:
-    vector<string> letterCombinations(string digits) {
-        if (digits.empty()) {
-            return vector<string>();
+// T = O(4^n), S = O(n)
+class Solution
+{
+    vector<string> v{"abc", "def", "ghi", "jkl", "mno", "pqrs", "tvu", "wxyz"};
+    vector<string> res;
+    void dfs(string digits, int i, string s)
+    {
+        if (digits.size() == i)
+        {
+            res.push_back(s);
+            return;
         }
-        vector<string> state(1, "");
-
-        for (auto u : digits) {
-            vector<string> now;
-            for (auto c : chars[u - '2']) {
-                for (auto s : state) {
-                    now.push_back(s + c);
-                }
-            }
-            state = now;
+        int k = digits[i] - '2';
+        for (auto c : v[k])
+        {
+            dfs(digits, i + 1, s + c);
         }
-        return state;
+    }
+
+public:
+    vector<string> letterCombinations(string digits)
+    {
+        if (digits.empty())
+        {
+            return {};
+        }
+        dfs(digits, 0, "");
+        return res;
     }
 };
 
-bool compare(vector<string> v1, vector<string> v2) {
-    if (v1.size() != v2.size()) {
-        return false;
-    }
-    sort(v1.begin(), v1.end());
-    sort(v2.begin(), v2.end());
-    int n = v1.size();
-    for (int i = 0; i < n; i++) {
-        if (v1[i] != v2[i]) {
-            return false;
+// T = O(4^n), S = O(4^n)
+class Solution
+{
+    vector<string> v{"abc", "def", "ghi", "jkl", "mno", "pqrs", "tvu", "wxyz"};
+
+public:
+    vector<string> letterCombinations(string digits)
+    {
+        if (digits.empty())
+        {
+            return {};
         }
+        queue<string> q;
+        q.push("");
+        for (auto c : digits)
+        {
+            string chars = v[c - '2'];
+            int n = q.size();
+            for (int i = 0; i < n; i++)
+            {
+                string s = q.front();
+                q.pop();
+                for (auto x : chars)
+                {
+                    q.push(s + x);
+                }
+            }
+        }
+        vector<string> res;
+        while (!q.empty())
+        {
+            res.push_back(q.front());
+            q.pop();
+        }
+        return res;
     }
-
-    return true;
-}
-
-void test_case_1() {
-    string digits = "23";
-    vector<string> ans{"ad", "ae", "af", "bd", "be", "bf", "cd", "ce", "cf"};
-
-    vector<string> res = Solution().letterCombinations(digits);
-    assert(compare(res, ans) == true);
-}
-
-int main() {
-    test_case_1();
-
-    return 0;
-}
+};
