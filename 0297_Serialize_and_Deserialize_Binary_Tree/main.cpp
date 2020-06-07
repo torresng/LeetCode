@@ -1,113 +1,78 @@
-#include <iostream>
-#include <string>
-
-using namespace std;
-
 /**
  * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
  */
-struct TreeNode {
-    int val;
-    TreeNode *left;
-    TreeNode *right;
-    TreeNode(int x) : val(x), left(NULL), right(NULL) {}
-};
-
-class Codec {
-  public:
-    // Encodes a tree to a single string.
-    string serialize(TreeNode *root) {
-        string res;
-        dfs1(root, res);
-        return res;
-    }
-
-  private:
-    void dfs1(TreeNode *root, string &res) {
-        if (!root) {
-            res += "#,";
+class Codec
+{
+    void dfs_s(TreeNode *root, string &s)
+    {
+        if (root == nullptr)
+        {
+            s += "null ";
             return;
         }
-        res += to_string(root->val) + ',';
-        dfs1(root->left, res);
-        dfs1(root->right, res);
+        s += to_string(root->val) + ' ';
+        dfs_s(root->left, s);
+        dfs_s(root->right, s);
     }
 
-  public:
-    // Decodes your encoded data to tree.
-    TreeNode *deserialize(string data) {
-        int i = 0;
-        return dfs2(data, i);
-    }
-
-  private:
-    TreeNode *dfs2(string &data, int &i) {
-        if (data[i] == '#') {
-            i += 2;
-            return NULL;
+    TreeNode *dfs_d(string s, int &i)
+    {
+        if (s.size() == i)
+        {
+            return nullptr;
         }
-
-        int t = 0;
-        bool is_minus = false;
-        if (data[i] == '-') {
-            is_minus = true;
+        while (i < s.size() && s[i] == ' ')
+        {
             i++;
         }
-        while (data[i] != ',') {
-            t = t * 10 + data[i] - '0';
+        if (s[i] == 'n')
+        {
+            i += 4;
+            return nullptr;
+        }
+        int t = 1;
+        if (s[i] == '-')
+        {
+            t = -1;
             i++;
         }
-        i++;
-        if (is_minus) {
-            t = -t;
+        int val = 0;
+        while (s[i] != ' ')
+        {
+            val = val * 10 + s[i] - '0';
+            i++;
         }
-
-        auto root = new TreeNode(t);
-        root->left = dfs2(data, i);
-        root->right = dfs2(data, i);
-
+        TreeNode *root = new TreeNode(val * t);
+        root->left = dfs_d(s, i);
+        root->right = dfs_d(s, i);
         return root;
+    }
+
+public:
+    // T = O(n), S = O(n)
+    // Encodes a tree to a single string.
+    string serialize(TreeNode *root)
+    {
+        string s;
+        dfs_s(root, s);
+        return s;
+    }
+
+    // T = O(n), S = O(n)
+    // Decodes your encoded data to tree.
+    TreeNode *deserialize(string data)
+    {
+        int i = 0;
+        return dfs_d(data, i);
     }
 };
 
 // Your Codec object will be instantiated and called as such:
 // Codec codec;
 // codec.deserialize(codec.serialize(root));
-
-bool compare(TreeNode *p, TreeNode *q) {
-    if (!p || !q) {
-        return !p && !q;
-    }
-    if (p->val != q->val) {
-        return false;
-    }
-
-    return compare(p->left, q->left) && compare(p->right, q->right);
-}
-
-void test_case_1() {
-    TreeNode *root = new TreeNode(1);
-    TreeNode *p1 = new TreeNode(2);
-    TreeNode *p2 = new TreeNode(3);
-    TreeNode *p3 = new TreeNode(4);
-    TreeNode *p4 = new TreeNode(5);
-    root->left = p1;
-    root->right = p2;
-    p2->left = p3;
-    p2->right = p4;
-    string ans1 = "1,2,#,#,3,4,#,#,5,#,#,";
-
-    string res1 = Codec().serialize(root);
-    assert(res1 == ans1);
-
-    TreeNode *ans2 = root;
-
-    TreeNode *res2 = Codec().deserialize(ans1);
-    assert(compare(res2, ans2) == true);
-}
-
-int main() {
-    test_case_1();
-
-    return 0;
-}
