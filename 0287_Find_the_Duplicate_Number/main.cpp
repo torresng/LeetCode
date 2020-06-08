@@ -1,26 +1,39 @@
-#include <algorithm>
-#include <iostream>
-#include <vector>
-
-using namespace std;
-
-class Solution {
-  public:
-    int findDuplicate(vector<int> &nums) {
+// T = O(n*log(n)), S = O(1)
+class Solution
+{
+public:
+    int findDuplicate(vector<int> &nums)
+    {
+        if (nums.empty())
+        {
+            return -1;
+        }
         int n = nums.size();
+        for (auto x : nums)
+        {
+            if (x < 1 && x > n)
+            {
+                return -1;
+            }
+        }
         int l = 1, r = n - 1;
-        while (l < r) {
+        while (l < r)
+        {
             int mid = (l + r) >> 1;
-
-            int cnt = 0;
-            for (int x : nums) {
-                if (l <= x && x <= mid) {
-                    ++cnt;
+            int count = 0;
+            for (auto x : nums)
+            {
+                if (x >= l && x <= mid)
+                {
+                    count++;
                 }
             }
-            if (cnt > mid - l + 1) {
+            if (count > mid - l + 1)
+            {
                 r = mid;
-            } else {
+            }
+            else
+            {
                 l = mid + 1;
             }
         }
@@ -28,31 +41,28 @@ class Solution {
     }
 };
 
-void test_case_1() {
-    vector<int> nums{1, 3, 4, 2, 2};
-    int ans = 2;
-    int res = Solution().findDuplicate(nums);
-    assert(res == ans);
-}
-
-void test_case_2() {
-    vector<int> nums{3, 1, 3, 4, 2};
-    int ans = 3;
-    int res = Solution().findDuplicate(nums);
-    assert(res == ans);
-}
-
-void test_case_3() {
-    vector<int> nums{1, 4, 4, 2, 4};
-    int ans = 4;
-    int res = Solution().findDuplicate(nums);
-    assert(res == ans);
-}
-
-int main() {
-    test_case_1();
-    test_case_2();
-    test_case_3();
-
-    return 0;
-}
+// T = O(n), S = O(1)
+class Solution
+{
+public:
+    int findDuplicate(vector<int> &nums)
+    {
+        int slow = 0, fast = 0;
+        while (true)
+        {
+            slow = nums[slow];
+            fast = nums[nums[fast]];
+            if (slow == fast)
+            {
+                break;
+            }
+        }
+        slow = 0;
+        while (slow != fast)
+        {
+            slow = nums[slow];
+            fast = nums[fast];
+        }
+        return slow;
+    }
+};
