@@ -1,42 +1,60 @@
-#include <iostream>
-#include <stack>
-#include <vector>
-
-using namespace std;
-
-class Solution {
-  public:
-    int trap(vector<int> &height) {
+// T = O(n), S = O(n)
+class Solution
+{
+public:
+    int trap(vector<int> &height)
+    {
+        if (height.empty())
+        {
+            return 0;
+        }
+        int n = height.size();
+        int leftMax = -1, rightMax = -1;
+        vector<int> d(n);
         int res = 0;
-        stack<int> stk;
-        for (int i = 0; i < (int)height.size(); i++) {
-            int last = 0;
-            while (!stk.empty() && height[stk.top()] <= height[i]) {
-                int t = stk.top();
-                stk.pop();
-                res += (i - t - 1) * (height[t] - last);
-                last = height[t];
-            }
-            if (!stk.empty()) {
-                res += (i - stk.top() - 1) * (height[i] - last);
-            }
-            stk.push(i);
+        for (int i = 0; i < n; i++)
+        {
+            leftMax = max(leftMax, height[i]);
+            d[i] = leftMax;
+        }
+        for (int i = n - 1; i >= 0; i--)
+        {
+            rightMax = max(rightMax, height[i]);
+            d[i] = min(d[i], rightMax);
+            res += d[i] - height[i];
         }
         return res;
     }
 };
 
-void test_case_1() {
-    vector<int> height{0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1};
-    int ans = 6;
-
-    int res = Solution().trap(height);
-
-    assert(res == ans);
-}
-
-int main() {
-    test_case_1();
-
-    return 0;
-}
+// T = O(n), S = O(1)
+class Solution
+{
+public:
+    int trap(vector<int> &height)
+    {
+        if (height.empty())
+        {
+            return 0;
+        }
+        int res = 0, n = height.size();
+        int leftMax = -1, rightMax = -1;
+        int i = 0, j = n - 1;
+        while (i < j)
+        {
+            leftMax = max(leftMax, height[i]);
+            rightMax = max(rightMax, height[j]);
+            if (leftMax < rightMax)
+            {
+                res += leftMax - height[i];
+                i++;
+            }
+            else
+            {
+                res += rightMax - height[j];
+                j--;
+            }
+        }
+        return res;
+    }
+};
