@@ -1,62 +1,55 @@
-#include <cassert>
-#include <iostream>
-#include <vector>
-
-using namespace std;
-
-class Solution {
-  public:
-    int findPeakElement(vector<int> &nums) {
+// T = O(n), S = O(1)
+class Solution
+{
+public:
+    int findPeakElement(vector<int> &nums)
+    {
+        if (nums.empty())
+        {
+            return -1;
+        }
         int n = nums.size();
-        int l = 0, r = n - 1;
-        while (l < r) {
-            int mid = (l + r + 1) >> 1;
-            if (nums[mid - 1] < nums[mid]) {
-                l = mid;
-            } else {
-                r = mid - 1;
+        for (int i = 0; i < n - 1; i++)
+        {
+            if (nums[i] > nums[i + 1])
+            {
+                return i;
             }
         }
-        return l;
+        return n - 1;
     }
 };
 
-void test_case_1() {
-    vector<int> nums{1, 2, 3, 1};
-    int res = Solution().findPeakElement(nums);
-    assert(res == 2);
-}
-
-void test_case_2() {
-    vector<int> nums{1, 2, 1, 3, 5, 6, 4};
-    int res = Solution().findPeakElement(nums);
-    assert(res == 1 || res == 5);
-}
-
-void test_case_3() {
-    vector<int> nums{1, 2};
-    int res = Solution().findPeakElement(nums);
-    assert(res == 1);
-}
-
-void test_case_4() {
-    vector<int> nums{2, 1};
-    int res = Solution().findPeakElement(nums);
-    assert(res == 0);
-}
-
-void test_case_5() {
-    vector<int> nums{1, 2, 3};
-    int res = Solution().findPeakElement(nums);
-    assert(res == 2);
-}
-
-int main(void) {
-    test_case_1();
-    test_case_2();
-    test_case_3();
-    test_case_4();
-    test_case_5();
-
-    return 0;
-}
+// T = O(log(n)), S = O(1)
+class Solution
+{
+public:
+    int findPeakElement(vector<int> &nums)
+    {
+        if (nums.empty())
+        {
+            return -1;
+        }
+        int n = nums.size();
+        int i = 0, j = n - 1;
+        while (i < j)
+        {
+            int mid = (i + j) >> 1;
+            int left = (mid - 1) >= 0 ? nums[mid - 1] : INT_MIN;
+            int right = (mid + 1) < n ? nums[mid + 1] : INT_MIN;
+            if (left < nums[mid] && right < nums[mid])
+            {
+                return mid;
+            }
+            else if (left > nums[mid])
+            {
+                j = mid - 1;
+            }
+            else
+            {
+                i = mid + 1;
+            }
+        }
+        return i;
+    }
+};
