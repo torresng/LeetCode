@@ -1,62 +1,63 @@
-#include <iostream>
-#include <unordered_map>
-#include <vector>
-
-using namespace std;
-
-class Solution {
-  public:
-    vector<int> intersect(vector<int> &nums1, vector<int> &nums2) {
-        vector<int> res;
-        unordered_map<int, int> m;
-        for (auto v : nums1) {
-            ++m[v];
+// T = O(n+m), S = O(n)
+class Solution
+{
+public:
+    vector<int> intersect(vector<int> &nums1, vector<int> &nums2)
+    {
+        if (nums1.empty() || nums2.empty())
+        {
+            return {};
         }
-        for (auto v : nums2) {
-            if (m[v]-- > 0) {
-                res.push_back(v);
+        int n = nums1.size(), m = nums2.size();
+        unordered_map<int, int> map;
+        for (auto x : nums1)
+        {
+            map[x]++;
+        }
+        vector<int> res;
+        for (auto x : nums2)
+        {
+            if (map[x] > 0)
+            {
+                res.push_back(x);
+                map[x]--;
             }
         }
         return res;
     }
 };
 
-bool compare(vector<int> &nums1, vector<int> &nums2) {
-    if (nums1.size() != nums2.size()) {
-        return false;
-    }
-    sort(nums1.begin(), nums1.end());
-    sort(nums2.begin(), nums2.end());
-    for (unsigned i = 0; i < nums1.size(); ++i) {
-        if (nums1[i] != nums2[i]) {
-            return false;
+// T = O(n*log(n)+m*log(m)), S = O(1)
+class Solution
+{
+public:
+    vector<int> intersect(vector<int> &nums1, vector<int> &nums2)
+    {
+        if (nums1.empty() || nums2.empty())
+        {
+            return {};
         }
+        int n = nums1.size(), m = nums2.size();
+        sort(nums1.begin(), nums1.end());
+        sort(nums2.begin(), nums2.end());
+        vector<int> res;
+        int i = 0, j = 0;
+        while (i < n && j < m)
+        {
+            if (nums1[i] == nums2[j])
+            {
+                res.push_back(nums1[i]);
+                i++, j++;
+            }
+            else if (nums1[i] < nums2[j])
+            {
+                i++;
+            }
+            else
+            {
+                j++;
+            }
+        }
+        return res;
     }
-
-    return true;
-}
-
-void test_case_1() {
-    vector<int> nums1{1, 2, 2, 1};
-    vector<int> nums2{2, 2};
-    vector<int> ans{2, 2};
-
-    vector<int> res = Solution().intersect(nums1, nums2);
-    assert(compare(res, ans) == true);
-}
-
-void test_case_2() {
-    vector<int> nums1{4, 9, 5};
-    vector<int> nums2{9, 4, 9, 8, 4};
-    vector<int> ans{4, 9};
-
-    vector<int> res = Solution().intersect(nums1, nums2);
-    assert(compare(res, ans) == true);
-}
-
-int main(void) {
-    test_case_1();
-    test_case_2();
-
-    return 0;
-}
+};
