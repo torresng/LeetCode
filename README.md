@@ -1,1 +1,1 @@
-# LeetCode written in C++
+# LeetCode
