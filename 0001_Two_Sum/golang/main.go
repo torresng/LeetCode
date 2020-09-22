@@ -2,7 +2,7 @@ package solution
 
 func twoSum(nums []int, target int) []int {
 	if len(nums) == 0 {
-		return []int{-1, -1}
+		return nil
 	}
 	hash := make(map[int]int)
 	for i1, v1 := range nums {
@@ -13,5 +13,5 @@ func twoSum(nums []int, target int) []int {
 		}
 		hash[v1] = i1
 	}
-	return []int{-1, -1}
+	return nil
 }
