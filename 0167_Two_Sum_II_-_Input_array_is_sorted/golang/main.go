@@ -5,8 +5,7 @@ func twoSum(numbers []int, target int) []int {
 		return nil
 	}
 	n := len(numbers)
-	i, j := 0, n-1
-	for i < j {
+	for i, j := 0, n-1; i < j; {
 		sum := numbers[i] + numbers[j]
 		if sum == target {
 			return []int{i + 1, j + 1}
