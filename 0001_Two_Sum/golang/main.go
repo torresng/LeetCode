@@ -1,5 +1,3 @@
-package solution
-
 func twoSum(nums []int, target int) []int {
 	if len(nums) == 0 {
 		return nil
