@@ -21,13 +21,20 @@ func abs(a int) int {
 	return a
 }
 
-func dfs(root *TreeNode, ans *bool) int {
+func dfs(root *TreeNode) int {
 	if root == nil {
 		return 0
 	}
-	left, right := dfs(root.Left, ans), dfs(root.Right, ans)
+	left := dfs(root.Left)
+	if left == -1 {
+		return -1
+	}
+	right := dfs(root.Right)
+	if right == -1 {
+		return -1
+	}
 	if abs(left-right) > 1 {
-		*ans = false
+		return -1
 	}
 	return max(left, right) + 1
 }
@@ -36,7 +43,5 @@ func isBalanced(root *TreeNode) bool {
 	if root == nil {
 		return true
 	}
-	ans := true
-	dfs(root, &ans)
-	return ans
+	return dfs(root) != -1
 }
