@@ -7,6 +7,7 @@ impl Solution {
                 None => { map.insert(val, idx as i32); }
             }
         }
+
         return vec![-1,-1];
     }
 }
